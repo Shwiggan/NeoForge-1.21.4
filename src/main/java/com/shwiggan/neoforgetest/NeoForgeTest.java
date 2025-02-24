@@ -1,5 +1,6 @@
 package com.shwiggan.neoforgetest;
 
+import com.shwiggan.neoforgetest.item.ModItems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -39,7 +40,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class NeoForgeTest
 {
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "neoforgetestmod";
+    public static final String MODID = "neoforgetest";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
@@ -86,6 +87,8 @@ public class NeoForgeTest
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
+        ModItems.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
@@ -109,8 +112,9 @@ public class NeoForgeTest
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
-            event.accept(EXAMPLE_BLOCK_ITEM);
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.BISMUTH);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
